@@ -1,0 +1,56 @@
+ONLINE RETAIL - SEGMENTACIÓN RFM
+========================================
+
+1. Objetivo
+Explorar si los clientes identificados presentan grupos diferenciados de comportamiento según recencia, frecuencia y valor monetario.
+
+2. Preparación de datos
+Clientes analizados: 4,338.
+Se utilizaron exclusivamente transacciones clasificadas como Sale con CustomerID disponible.
+Las variables RFM fueron transformadas mediante log(1+x) y posteriormente estandarizadas antes de aplicar K-Means.
+
+3. Comparación de modelos K-Means
+ k  Inertia Silhouette
+ 2 6,476.51     0.4325
+ 3 4,858.08     0.3372
+ 4 3,925.27     0.3339
+ 5 3,269.07     0.3182
+ 6 2,840.65     0.3146
+ 7 2,532.98     0.3103
+ 8 2,325.08     0.3021
+ 9 2,145.84     0.2816
+10 1,989.40     0.2771
+
+El mayor coeficiente silhouette se obtuvo con k=2: 0.4325.
+La inercia disminuye al aumentar k, como es esperable en K-Means, por lo que el silhouette se utilizó como criterio principal de separación.
+
+4. Perfil de la solución k=2
+ Cluster  Customers RecencyMedian RecencyMean FrequencyMedian FrequencyMean MonetaryMedian MonetaryMean CustomerShare
+       0       1668          17.0        26.5             6.0          8.44       2,058.17     4,535.74     38.450899
+       1       2670          96.0       134.7             1.0          1.67         362.01       494.98     61.549101
+
+El grupo con comportamiento más activo representa 38.45% de los clientes, con recencia mediana de 17 días, frecuencia mediana de 6 y valor monetario mediano de 2,058.17.
+El grupo menos activo representa 61.55% de los clientes, con recencia mediana de 96 días, frecuencia mediana de 1 y valor monetario mediano de 362.01.
+
+5. Análisis de componentes principales
+PC1 explica 75.12% de la varianza.
+PC2 explica 18.74% de la varianza.
+Las dos primeras componentes explican conjuntamente 93.86% de la varianza.
+
+Cargas PCA:
+                 PC1    PC2
+LogRecency   -0.5123 0.8495
+LogFrequency  0.6178 0.2624
+LogMonetary   0.5966 0.4577
+
+PC1 contrapone principalmente la recencia frente a la frecuencia y el valor monetario, por lo que resume una dimensión general de intensidad de la relación comercial.
+PC2 está dominada principalmente por la recencia y captura una segunda fuente de variabilidad temporal entre clientes.
+
+Figura PCA: 04_rfm_clusters_pca.png
+
+6. Conclusión
+Entre las soluciones K-Means evaluadas, la partición en dos grupos proporciona la separación más clara según el coeficiente silhouette.
+Los grupos obtenidos presentan diferencias marcadas y coherentes en recencia, frecuencia y valor monetario.
+El PCA conserva el 93.86% de la variabilidad en dos dimensiones, lo que permite representar visualmente gran parte de la estructura del espacio RFM.
+
+Estos resultados respaldan la existencia de heterogeneidad estructurada en el comportamiento de compra de los clientes.
