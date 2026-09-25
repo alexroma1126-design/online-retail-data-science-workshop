@@ -1,0 +1,111 @@
+ONLINE RETAIL - EXPLORATORY DATA ANALYSIS REPORT
+====================================================
+
+1. DATASET OVERVIEW
+Rows: 536,641
+Columns: 22
+Unique invoices: 25,900
+Unique products: 4,070
+Identified customers: 4,372
+Active dates: 305
+Observed period: 2010-12-01 08:26:00 to 2011-12-09 12:50:00
+Net observed amount: 9,726,006.95
+
+Interpretation:
+The unit of observation is an invoice line, not necessarily a complete customer purchase. InvoiceNo must therefore be used when analyses require invoice-level behavior.
+
+2. DATA QUALITY
+Missing CustomerID: 135,037 (25.16%).
+Missing Description: 1,454 (0.27%).
+Exact duplicates after cleaning: 0.
+
+Interpretation:
+Missing customer identifiers are retained because removing them would discard a substantial portion of the dataset and customer identity is not required for every analysis.
+
+3. FIELD-BY-FIELD METADATA
+             Field          Dtype   Rows  Missing  MissingPct  Unique        Min      Max      Mean
+         InvoiceNo            str 536641        0    0.000000   25900        NaN      NaN       NaN
+         StockCode            str 536641        0    0.000000    4070        NaN      NaN       NaN
+       Description            str 536641     1454    0.270945    4211        NaN      NaN       NaN
+          Quantity          int64 536641        0    0.000000     722  -80995.00  80995.0  9.620029
+       InvoiceDate datetime64[us] 536641        0    0.000000   23260        NaN      NaN       NaN
+         UnitPrice        float64 536641        0    0.000000    1630  -11062.06  38970.0  4.632656
+        CustomerID          Int64 536641   135037   25.163377    4372   12346.00  18287.0       NaN
+           Country            str 536641        0    0.000000      38        NaN      NaN       NaN
+    IsCancellation           bool 536641        0    0.000000       2        NaN      NaN       NaN
+     HasCustomerID           bool 536641        0    0.000000       2        NaN      NaN       NaN
+    HasDescription           bool 536641        0    0.000000       2        NaN      NaN       NaN
+       IsZeroPrice           bool 536641        0    0.000000       2        NaN      NaN       NaN
+   IsNegativePrice           bool 536641        0    0.000000       2        NaN      NaN       NaN
+IsNegativeQuantity           bool 536641        0    0.000000       2        NaN      NaN       NaN
+   TransactionType            str 536641        0    0.000000       4        NaN      NaN       NaN
+       TotalAmount        float64 536641        0    0.000000    5998 -168469.60 168469.6 18.123861
+              Date datetime64[us] 536641        0    0.000000     305        NaN      NaN       NaN
+              Year          int64 536641        0    0.000000       2    2010.00   2011.0       NaN
+             Month          int64 536641        0    0.000000      12       1.00     12.0       NaN
+               Day          int64 536641        0    0.000000      31       1.00     31.0       NaN
+              Hour          int64 536641        0    0.000000      15       6.00     20.0 13.077154
+           Weekday            str 536641        0    0.000000       6        NaN      NaN       NaN
+
+4. TRANSACTION STRUCTURE
+TransactionType   Rows       Amount
+           Sale 524878 10642110.804
+   Cancellation   9251  -893979.730
+     Adjustment   1336        0.000
+          Other   1176   -22124.120
+
+Interpretation:
+Sales dominate the dataset, while cancellations and other records are preserved because they contribute to the observed net monetary result.
+
+5. GEOGRAPHIC STRUCTURE
+       Country   Rows  Invoices  Customers      Amount
+United Kingdom 490300     23494       3950 8167128.184
+   Netherlands   2371       101          9  284661.540
+          EIRE   8184       360          3  262993.380
+       Germany   9480       603         95  221509.470
+        France   8541       461         87  197317.110
+     Australia   1258        69          9  137009.770
+   Switzerland   1994        74         21   56363.050
+         Spain   2528       105         31   54756.030
+       Belgium   2069       119         25   40910.960
+        Sweden    461        46          8   36585.410
+
+United Kingdom rows: 490,300 (91.36% of all rows).
+
+Interpretation:
+The dataset is strongly concentrated in the United Kingdom. Aggregate conclusions therefore largely reflect UK activity, and cross-country comparisons should account for this imbalance.
+
+6. TEMPORAL STRUCTURE
+  Weekday   Rows  Invoices      Amount
+ Thursday 103056      5660 2108701.530
+  Tuesday 101064      4722 1965703.611
+   Monday  94435      4138 1584895.301
+Wednesday  93715      4815 1730088.430
+   Friday  81565      4184 1537958.621
+   Sunday  62806      2381  798659.461
+
+Weekdays absent from the observed transactions: Saturday
+
+Interpretation:
+Activity is not uniformly distributed across the calendar. Missing or inactive weekdays must be considered explicitly before constructing daily time-series or arrival-process models.
+
+7. MAIN FINDINGS
+- The cleaned analytical dataset contains 536,641 invoice-line observations.
+- There are 25,900 unique invoices.
+- There are 4,070 unique stock codes.
+- There are 4,372 identified customers.
+- CustomerID is missing in 25.16% of observations.
+- The United Kingdom represents 91.36% of all invoice-line observations.
+- The net observed monetary amount is 9,726,006.95.
+- Extreme positive and negative quantities and amounts are retained because the audit identified cancellations and business adjustments rather than treating all extremes as automatic statistical outliers.
+
+8. GENERATED METADATA
+For each field the analysis generates its pandas dtype, number of rows, missing-value count and percentage, number of unique values, and numerical range/mean when meaningful.
+Additional dataset-level metadata include temporal coverage, active dates, invoice count, product count, customer count, transaction categories, geographic concentration, and net monetary amount.
+
+9. QUESTIONS FOR FURTHER ANALYSIS
+- How are invoice arrivals distributed through time, and is a Poisson-type arrival model empirically plausible?
+- Do transaction values exhibit heavy tails or other non-Gaussian behavior?
+- Is there temporal dependence or seasonality in daily sales?
+- Can daily activity be represented by low, medium, and high states with meaningful Markov transition probabilities?
+- If temporal dependence and seasonality are supported by the data, does a SARIMA-type model provide a useful description?
