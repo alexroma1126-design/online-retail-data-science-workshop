@@ -31,3 +31,6 @@ data/raw/*
 
 # Keep advanced RFM visualization
 !figures/04_rfm_clusters_pca.png
+
+# Keep advanced product graph visualization
+!figures/05_product_communities.png
