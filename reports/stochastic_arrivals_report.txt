@@ -1,0 +1,47 @@
+ANÁLISIS ESTOCÁSTICO DE LLEGADAS
+============================================
+
+1. Objetivo
+
+Se estudia si la llegada diaria de facturas puede aproximarse mediante un proceso de Poisson homogéneo.
+
+2. Patrón semanal
+
+ WeekdayNumber  Days   Mean Variance Dispersion
+             0    53 58.981  825.211     13.991
+             1    53 67.057  564.554      8.419
+             2    54 68.333  744.906     10.901
+             3    54 78.630  815.936     10.377
+             4    54 58.148  587.487     10.103
+             5    53  0.000    0.000        NaN
+             6    53 41.585  616.594     14.827
+
+El sábado presenta actividad estructuralmente nula y por ello se excluye de la comparación Poisson ajustada.
+
+3. Diagnóstico Poisson ajustado por día de semana
+
+OperatingCalendarDays: 321
+ObservedZeroDays: 16
+ExpectedZeroDaysPoisson: 0.00000000
+PearsonChiSquare: 3599.55930597
+ResidualDegreesFreedom: 315
+PearsonDispersion: 11.42717240
+ChiSquarePValue: 0.00000000
+
+4. Intervalos de llegada dentro del mismo día
+
+WithinDayIntervals: 19655
+ZeroMinuteIntervals: 1495
+PositiveIntervals: 18160
+MeanMinutes: 8.733205
+MedianMinutes: 5.000000
+P90Minutes: 20.000000
+CoefficientVariation: 1.205451
+
+5. Interpretación
+
+En un modelo Poisson homogéneo ideal, la media y la varianza de los conteos deberían ser aproximadamente iguales.
+Los datos presentan una varianza muy superior a la media, incluso al separar la actividad por día de la semana.
+La fuerte autocorrelación semanal observada previamente y las diferencias entre días muestran que la intensidad de llegada no es constante.
+Por tanto, un proceso de Poisson homogéneo resulta demasiado simple para representar estas llegadas.
+La evidencia es compatible con una intensidad variable en el tiempo y con sobredispersión adicional.

@@ -34,3 +34,6 @@ data/raw/*
 
 # Keep advanced product graph visualization
 !figures/05_product_communities.png
+!figures/06_arrival_diagnostics.png
+!figures/07_markov_transition_matrix.png
+!figures/08_sarima_forecast.png
