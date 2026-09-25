@@ -1,0 +1,36 @@
+ANÁLISIS DE MARKOV DE LA ACTIVIDAD DIARIA
+=================================================
+
+1. Definición de estados
+
+Se excluye el sábado porque presenta actividad estructuralmente nula.
+Cada día operativo se normaliza respecto a la media histórica de su mismo día de la semana.
+Los estados Bajo, Medio y Alto se definen mediante terciles de esta actividad relativa.
+
+Límite Bajo/Medio: 0.840894
+Límite Medio/Alto: 1.105430
+
+2. Resumen de estados
+
+ State  Days MeanInvoices MedianInvoices MeanActivityRatio
+   Low   107       35.327         41.000             0.570
+Medium   107       61.729         63.000             0.961
+  High   107       89.486         85.000             1.469
+
+3. Diagnósticos
+
+Transitions: 320
+Persistence: 0.60312500
+ChiSquare: 132.19962624
+DegreesFreedom: 4
+ChiSquarePValue: 0.00000000
+StationaryLow: 0.33836218
+StationaryMedium: 0.33562157
+StationaryHigh: 0.32601624
+
+4. Interpretación
+
+La matriz de transición permite evaluar si el estado de actividad actual contiene información sobre el siguiente.
+Una probabilidad diagonal elevada indica persistencia del mismo régimen.
+La prueba chi-cuadrado contrasta la independencia entre el estado actual y el estado siguiente.
+Este modelo es descriptivo y no implica que el proceso real satisfaga exactamente la propiedad de Markov.

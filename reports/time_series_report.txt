@@ -1,0 +1,50 @@
+ANÁLISIS DE SERIES TEMPORALES Y SARIMA
+==============================================
+
+1. Diseño de validación
+
+Observaciones de entrenamiento: 318
+Observaciones de prueba: 56
+Inicio de prueba: 2011-10-15
+Fin de prueba: 2011-12-09
+La prueba corresponde a las últimas ocho semanas calendario.
+El conjunto de prueba no se utiliza para seleccionar el modelo SARIMA.
+
+2. Modelos SARIMA candidatos
+
+    Order SeasonalOrder     AIC     BIC  Converged
+(1, 0, 1)  (1, 1, 1, 7) 707.541 729.804       True
+(1, 0, 1)  (0, 1, 1, 7) 714.424 732.976       True
+(1, 0, 0)  (0, 1, 1, 7) 752.276 767.131       True
+(2, 0, 1)  (1, 1, 0, 7) 810.020 832.283       True
+(1, 0, 1)  (1, 1, 0, 7) 811.972 830.541       True
+(1, 0, 0)  (1, 1, 0, 7) 833.969 848.824       True
+
+Modelo seleccionado: SARIMA(1, 0, 1)(1, 1, 1, 7)
+
+3. Evaluación fuera de muestra
+
+Baseline semanal: se repite el último patrón observado de siete días.
+
+Baseline MAE: 22.392857
+Baseline RMSE: 29.585228
+Baseline sMAPE: 30.432%
+
+SARIMA MAE: 18.396042
+SARIMA RMSE: 25.409870
+SARIMA sMAPE: 25.528%
+
+Mejora MAE de SARIMA frente al baseline: 17.849%
+Mejora RMSE de SARIMA frente al baseline: 14.113%
+
+4. Diagnóstico de residuos
+
+     lb_stat  lb_pvalue
+7  17.714301   0.013328
+14 36.875312   0.000770
+
+5. Interpretación
+
+La comparación fuera de muestra permite evaluar si el modelo temporal aporta información adicional frente a repetir simplemente el patrón de la semana anterior.
+Un valor positivo en las mejoras de MAE o RMSE indica ventaja de SARIMA; un valor negativo indica que el baseline semanal fue más preciso.
+La conclusión se basa en datos no usados durante la estimación del modelo.

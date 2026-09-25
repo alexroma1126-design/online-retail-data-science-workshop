@@ -28,3 +28,12 @@ data/raw/*
 !figures/01_daily_sales.png
 !figures/02_rfm_customers.png
 !figures/03_product_cooccurrence.png
+
+# Keep advanced RFM visualization
+!figures/04_rfm_clusters_pca.png
+
+# Keep advanced product graph visualization
+!figures/05_product_communities.png
+!figures/06_arrival_diagnostics.png
+!figures/07_markov_transition_matrix.png
+!figures/08_sarima_forecast.png

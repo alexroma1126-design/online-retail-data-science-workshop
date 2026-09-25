@@ -1,0 +1,99 @@
+ANÁLISIS AVANZADO DE LA RED DE CO-COMPRA
+================================================
+
+1. Construcción de la red
+
+Los nodos representan productos y una arista indica que dos productos aparecieron juntos en facturas de venta.
+El peso de una arista corresponde al número de facturas en las que el par fue observado.
+Se conservan aristas con al menos 100 co-compras.
+Los códigos de servicios o ajustes administrativos fueron excluidos únicamente para este análisis de red.
+Los códigos de producto fueron normalizados a mayúsculas para evitar duplicados debidos a diferencias de capitalización.
+
+2. Estructura global
+
+Nodos: 729
+Aristas: 8,061
+Componentes: 44
+Nodos en la componente gigante: 616
+Aristas en la componente gigante: 7,967
+Densidad de la componente gigante: 0.042060
+Clustering medio: 0.671069
+
+3. Productos centrales
+
+StockCode                        Description  Degree  WeightedDegree PageRank Betweenness
+   85123A WHITE HANGING HEART T-LIGHT HOLDER     337           54002 0.026601    0.212818
+   85099B            JUMBO BAG RED RETROSPOT     316           58069 0.024536    0.158947
+    22423           REGENCY CAKESTAND 3 TIER     244           37770 0.014246    0.066153
+    21212    PACK OF 72 RETROSPOT CAKE CASES     234           36722 0.013950    0.062663
+    22197                     POPCORN HOLDER     247           36702 0.013650    0.049618
+    20725            LUNCH BAG RED RETROSPOT     217           38339 0.012845    0.028853
+    22086     PAPER CHAIN KIT 50'S CHRISTMAS     179           24381 0.012373    0.102628
+    22961             JAM MAKING SET PRINTED     216           31481 0.011811    0.030296
+    22666    RECIPE BOX PANTRY YELLOW DESIGN     199           29048 0.010148    0.017926
+    47566                      PARTY BUNTING     170           26832 0.009920    0.028395
+    21931             JUMBO STORAGE BAG SUKI     160           27814 0.009258    0.011291
+    22720   SET OF 3 CAKE TINS PANTRY DESIGN     170           25600 0.009239    0.019810
+    20724        RED RETROSPOT CHARLOTTE BAG     174           28339 0.009184    0.012246
+    22457     NATURAL SLATE HEART CHALKBOARD     177           25251 0.009122    0.015382
+    22960           JAM MAKING SET WITH JARS     169           24461 0.008402    0.010242
+
+4. Pares de productos con mayor co-compra
+
+ProductA                      DescriptionA ProductB                    DescriptionB  Weight
+   22386           JUMBO BAG PINK POLKADOT   85099B         JUMBO BAG RED RETROSPOT     825
+   22697   GREEN REGENCY TEACUP AND SAUCER    22699 ROSES REGENCY TEACUP AND SAUCER     767
+   21931            JUMBO STORAGE BAG SUKI   85099B         JUMBO BAG RED RETROSPOT     724
+   22411 JUMBO SHOPPER VINTAGE RED PAISLEY   85099B         JUMBO BAG RED RETROSPOT     680
+   20725           LUNCH BAG RED RETROSPOT    22383           LUNCH BAG SUKI DESIGN     655
+   20725           LUNCH BAG RED RETROSPOT    20727         LUNCH BAG  BLACK SKULL.     641
+   22726        ALARM CLOCK BAKELIKE GREEN    22727        ALARM CLOCK BAKELIKE RED     640
+   22697   GREEN REGENCY TEACUP AND SAUCER    22698  PINK REGENCY TEACUP AND SAUCER     632
+   20725           LUNCH BAG RED RETROSPOT    22384         LUNCH BAG PINK POLKADOT     606
+   22698    PINK REGENCY TEACUP AND SAUCER    22699 ROSES REGENCY TEACUP AND SAUCER     598
+  85099B           JUMBO BAG RED RETROSPOT   85099C  JUMBO  BAG BAROQUE BLACK WHITE     585
+   20727           LUNCH BAG  BLACK SKULL.    22383           LUNCH BAG SUKI DESIGN     584
+   20725           LUNCH BAG RED RETROSPOT   85099B         JUMBO BAG RED RETROSPOT     579
+   23203           JUMBO BAG VINTAGE DOILY   85099B         JUMBO BAG RED RETROSPOT     577
+   20725           LUNCH BAG RED RETROSPOT    22382       LUNCH BAG SPACEBOY DESIGN     560
+
+5. Comunidades de productos
+
+Número de comunidades Louvain: 15
+Modularidad ponderada: 0.261954
+
+ Community  Nodes  InternalEdges  InternalWeight                                                                                                                                                                                                   TopProducts
+         1    120            531           84044        85123A: WHITE HANGING HEART T-LIGHT HOLDER | 22423: REGENCY CAKESTAND 3 TIER | 22457: NATURAL SLATE HEART CHALKBOARD | 22697: GREEN REGENCY TEACUP AND SAUCER | 22699: ROSES REGENCY TEACUP AND SAUCER
+         2    102            498           63413                                                        22197: POPCORN HOLDER | 22961: JAM MAKING SET PRINTED | 22666: RECIPE BOX PANTRY YELLOW DESIGN | 21935: SUKI  SHOULDER BAG | 21790: VINTAGE SNAP CARDS
+         3     97            413           58237         22086: PAPER CHAIN KIT 50'S CHRISTMAS | 23301: GARDENERS KNEELING PAD KEEP CALM | 22910: PAPER CHAIN KIT VINTAGE CHRISTMAS | 23344: JUMBO BAG 50'S CHRISTMAS | 22952: 60 CAKE CASES VINTAGE CHRISTMAS
+         4     80            384           58615                      21212: PACK OF 72 RETROSPOT CAKE CASES | 22720: SET OF 3 CAKE TINS PANTRY DESIGN | 22960: JAM MAKING SET WITH JARS | 22993: SET OF 4 PANTRY JELLY MOULDS | 22077: 6 RIBBONS RUSTIC CHARM
+         5     72            411           80542                                  85099B: JUMBO BAG RED RETROSPOT | 21931: JUMBO STORAGE BAG SUKI | 22411: JUMBO SHOPPER VINTAGE RED PAISLEY | 22386: JUMBO BAG PINK POLKADOT | 23203: JUMBO BAG VINTAGE DOILY
+         6     71            732          132394                                                20725: LUNCH BAG RED RETROSPOT | 47566: PARTY BUNTING | 20724: RED RETROSPOT CHARLOTTE BAG | 20727: LUNCH BAG  BLACK SKULL. | 22355: CHARLOTTE BAG SUKI DESIGN
+         7     16             30            4429                    20972: PINK CREAM FELT CRAFT TRINKET BOX | 22568: FELTCRAFT CUSHION OWL | 22749: FELTCRAFT PRINCESS CHARLOTTE DOLL | 20971: PINK BLUE FELT CRAFT TRINKET BOX | 22273: FELTCRAFT DOLL MOLLY
+         8     11             17            2151                                           22029: SPACEBOY BIRTHDAY CARD | 22983: CARD BILLBOARD FONT | 22027: TEA PARTY BIRTHDAY CARD | 21509: COWBOYS AND INDIANS BIRTHDAY CARD | 22037: ROBOT BIRTHDAY CARD
+         9     10             20            3576 21668: RED STRIPE CERAMIC DRAWER KNOB | 22771: CLEAR DRAWER KNOB ACRYLIC EDWARDIAN | 21669: BLUE STRIPE CERAMIC DRAWER KNOB | 21671: RED SPOT CERAMIC DRAWER KNOB | 21672: WHITE SPOT RED CERAMIC DRAWER KNOB
+        10     10             36            5002                                                                       20677: PINK POLKADOT BOWL | 20675: BLUE POLKADOT BOWL | 21238: RED RETROSPOT CUP | 21240: BLUE POLKADOT CUP | 20676: RED RETROSPOT BOWL
+        11     10             16            2106                22998: TRAVEL CARD WALLET KEEP CALM | 22996: TRAVEL CARD WALLET VINTAGE TICKET | 23000: TRAVEL CARD WALLET TRANSPORT | 22999: TRAVEL CARD WALLET VINTAGE LEAF | 22995: TRAVEL CARD WALLET SUKI
+        12      6              6             776      23367: SET 12 COLOUR PENCILS SPACEBOY | 20973: 12 PENCIL SMALL TUBE WOODLAND | 23368: SET 12 COLOUR PENCILS DOLLY GIRL | 20975: 12 PENCILS SMALL TUBE RED RETROSPOT | 20974: 12 PENCILS SMALL TUBE SKULL
+        13      4              6            1026                                                                                                     21900: KEY FOB , SHED | 21901: KEY FOB , BACK DOOR | 21899: GARAGE KEY FOB | 21902: KEY FOB , FRONT  DOOR
+        14      4              6            1403                                                                 22745: POPPY'S PLAYHOUSE BEDROOM | 22748: POPPY'S PLAYHOUSE KITCHEN | 22746: POPPY'S PLAYHOUSE LIVINGROOM | 22747: POPPY'S PLAYHOUSE BATHROOM
+        15      3              3             450                                                                                              23256: CHILDRENS CUTLERY SPACEBOY | 23254: CHILDRENS CUTLERY DOLLY GIRL | 23255: CHILDRENS CUTLERY CIRCUS PARADE
+
+6. Análisis espectral
+
+lambda_1: 0.00000000
+lambda_2: 0.07404291
+lambda_3: 0.09582405
+lambda_4: 0.12685688
+lambda_5: 0.13935615
+lambda_6: 0.14437777
+
+Segundo autovalor del Laplaciano normalizado: 0.07404291
+
+7. Interpretación
+
+La red presenta alta cohesión local y una componente gigante dominante, pero también una organización interna en grupos de productos.
+Las comunidades detectadas muestran coherencia comercial, agrupando familias como bolsas, artículos navideños, vajilla y otros productos relacionados.
+La modularidad positiva indica una estructura comunitaria moderada; no implica una separación absoluta entre los grupos.
+El segundo autovalor positivo del Laplaciano normalizado confirma que la componente analizada es conexa. Su magnitud relativamente pequeña es compatible con la presencia de subestructuras y cuellos de botella dentro de la red.
+En conjunto, el análisis muestra que las compras no forman una colección de productos independientes, sino una red con asociaciones y estructura comunitaria observables.
