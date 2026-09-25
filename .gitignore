@@ -1,0 +1,25 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# VS Code
+.vscode/
+
+# Generated data
+data/processed/
+database/*.db
+
+# Generated figures
+figures/*.png
+
+# Temporary files
+*.tmp
+.DS_Store
+
+# Raw datasets
+data/raw/*
+!data/raw/.gitkeep
+
+# Keep processed directory structure
+!data/processed/.gitkeep
