@@ -23,3 +23,8 @@ data/raw/*
 
 # Keep processed directory structure
 !data/processed/.gitkeep
+
+# Keep final workshop visualizations
+!figures/01_daily_sales.png
+!figures/02_rfm_customers.png
+!figures/03_product_cooccurrence.png
