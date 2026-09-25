@@ -6,25 +6,25 @@ Figuras guardadas:
 - 02_rfm_customers.png
 - 03_product_cooccurrence.png
 
-1. Figure: 01_daily_sales.png
+1. Figura: 01_daily_sales.png
 Técnica: gráfico de línea de serie temporal con promedio móvil de 7 días.
-Peak active day: 2011-11-14 with net sales 111,958.62.
-Lowest active day: 2011-01-05 with net sales -1,570.43.
-Calendar days represented: 374, including 69 zero-activity days.
-Interpretación: daily sales are highly variable, so the moving average helps reveal the broader weekly pattern beneath the day-to-day noise.
+Día activo con mayores ventas: 2011-11-14 con ventas netas 111,958.62.
+Día activo con menores ventas: 2011-01-05 con ventas netas -1,570.43.
+Días calendario representados: 374, incluyendo 69 días sin actividad.
+Interpretación: las ventas diarias presentan una variabilidad elevada, por lo que el promedio móvil permite identificar mejor el patrón semanal general detrás de las fluctuaciones diarias.
 
-2. Figure: 02_rfm_customers.png
-Technique: scatter plot of Recency vs. log-transformed Frequency, colored by signed log Monetary value.
-Customers represented: 4,372.
-Median recency: 50 days; median frequency: 3; median monetary value: 644.07.
-Interpretación: customer behavior is heterogeneous, with clear differences in time since last purchase, purchasing frequency, and cumulative value.
+2. Figura: 02_rfm_customers.png
+Técnica: diagrama de dispersión de Recencia frente a Frecuencia transformada logarítmicamente, coloreado según el valor monetario transformado.
+Clientes representados: 4,372.
+Recencia mediana: 50 d?as; frecuencia mediana: 3; valor monetario mediano: 644.07.
+Interpretación: el comportamiento de los clientes es heterogéneo, con diferencias claras en el tiempo desde la última compra, la frecuencia de compra y el valor monetario acumulado.
 
-3. Figure: 03_product_cooccurrence.png
+3. Figura: 03_product_cooccurrence.png
 Técnica: mapa de calor de co-compra para los productos más frecuentes.
-Top country by net amount in the dataset: United Kingdom (8,167,128.18).
-Second country by net amount: Netherlands (284,661.54).
-Largest co-occurrence count in the displayed matrix: 825 shared sale invoices.
-Interpretación: products are not purchased independently; the heatmap reveals repeated co-purchase structure and motivates future basket-analysis or graph-based modeling.
+País con mayor monto neto en el conjunto de datos: United Kingdom (8,167,128.18).
+Segundo país por monto neto: Netherlands (284,661.54).
+Mayor coocurrencia observada en la matriz mostrada: 825 facturas de venta compartidas.
+Interpretación: los productos no se compran de manera independiente; el mapa de calor muestra una estructura repetida de co-compra y motiva futuros análisis de cesta de mercado o modelos basados en grafos.
 
 Conclusión general:
-The three visualizations complement each other: the first focuses on temporal dynamics, the second on customer behavior, and the third on relationships among products.
+Las tres visualizaciones se complementan: la primera se enfoca en la dinámica temporal, la segunda en el comportamiento de los clientes y la tercera en las relaciones entre productos.

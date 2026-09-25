@@ -396,63 +396,63 @@ def write_visualization_report(
 
     lines += [
         "",
-        "1. Figure: 01_daily_sales.png",
+        "1. Figura: 01_daily_sales.png",
         "Técnica: gráfico de línea de serie temporal con promedio móvil de 7 días.",
         (
-            f"Peak active day: {peak_day['Date'].date()} "
-            f"with net sales {peak_day['NetAmount']:,.2f}."
+            f"Día activo con mayores ventas: {peak_day['Date'].date()} "
+            f"con ventas netas {peak_day['NetAmount']:,.2f}."
         ),
         (
-            f"Lowest active day: {low_day['Date'].date()} "
-            f"with net sales {low_day['NetAmount']:,.2f}."
+            f"Día activo con menores ventas: {low_day['Date'].date()} "
+            f"con ventas netas {low_day['NetAmount']:,.2f}."
         ),
         (
-            f"Calendar days represented: {len(daily_calendar):,}, "
-            f"including {(daily_calendar == 0).sum():,} zero-activity days."
+            f"Días calendario representados: {len(daily_calendar):,}, "
+            f"incluyendo {(daily_calendar == 0).sum():,} días sin actividad."
         ),
         (
-            "Interpretación: daily sales are highly variable, so the moving average "
-            "helps reveal the broader weekly pattern beneath the day-to-day noise."
+            "Interpretación: las ventas diarias presentan una variabilidad elevada, por lo que el promedio móvil "
+            "permite identificar mejor el patrón semanal general detrás de las fluctuaciones diarias."
         ),
         "",
-        "2. Figure: 02_rfm_customers.png",
-        "Technique: scatter plot of Recency vs. log-transformed Frequency, colored by signed log Monetary value.",
-        f"Customers represented: {len(rfm):,}.",
+        "2. Figura: 02_rfm_customers.png",
+        "Técnica: diagrama de dispersión de Recencia frente a Frecuencia transformada logarítmicamente, coloreado según el valor monetario transformado.",
+        f"Clientes representados: {len(rfm):,}.",
         (
-            f"Median recency: {rfm['Recency'].median():.0f} days; "
-            f"median frequency: {rfm['Frequency'].median():.0f}; "
-            f"median monetary value: {rfm['Monetary'].median():,.2f}."
+            f"Recencia mediana: {rfm['Recency'].median():.0f} d?as; "
+            f"frecuencia mediana: {rfm['Frequency'].median():.0f}; "
+            f"valor monetario mediano: {rfm['Monetary'].median():,.2f}."
         ),
         (
-            "Interpretación: customer behavior is heterogeneous, with clear differences "
-            "in time since last purchase, purchasing frequency, and cumulative value."
+            "Interpretación: el comportamiento de los clientes es heterogéneo, con diferencias claras "
+            "en el tiempo desde la última compra, la frecuencia de compra y el valor monetario acumulado."
         ),
         "",
-        "3. Figure: 03_product_cooccurrence.png",
+        "3. Figura: 03_product_cooccurrence.png",
         "Técnica: mapa de calor de co-compra para los productos más frecuentes.",
         (
-            f"Top country by net amount in the dataset: "
+            f"País con mayor monto neto en el conjunto de datos: "
             f"{top_country['Country']} ({top_country['NetAmount']:,.2f})."
         ),
         (
-            f"Second country by net amount: "
+            f"Segundo país por monto neto: "
             f"{second_country['Country']} ({second_country['NetAmount']:,.2f})."
         ),
         (
-            f"Largest co-occurrence count in the displayed matrix: "
-            f"{top_pair_value:,} shared sale invoices."
+            f"Mayor coocurrencia observada en la matriz mostrada: "
+            f"{top_pair_value:,} facturas de venta compartidas."
         ),
         (
-            "Interpretación: products are not purchased independently; the heatmap "
-            "reveals repeated co-purchase structure and motivates future "
-            "basket-analysis or graph-based modeling."
+            "Interpretación: los productos no se compran de manera independiente; el mapa de calor "
+            "muestra una estructura repetida de co-compra y motiva futuros "
+            "análisis de cesta de mercado o modelos basados en grafos."
         ),
         "",
         "Conclusión general:",
         (
-            "The three visualizations complement each other: the first focuses "
-            "on temporal dynamics, the second on customer behavior, and the "
-            "third on relationships among products."
+            "Las tres visualizaciones se complementan: la primera se enfoca "
+            "en la dinámica temporal, la segunda en el comportamiento de los clientes y la "
+            "tercera en las relaciones entre productos."
         ),
     ]
 
@@ -540,6 +540,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
 
 
