@@ -18,6 +18,350 @@ Los scripts fueron diseñados para que cada etapa pueda ejecutarse nuevamente de
 
 ---
 
+<!-- HOMEWORK1-SUMMARY:START -->
+
+# Deber 1 — Adquisición, procesamiento y visualización de datos
+
+## Resumen de la entrega
+
+Este trabajo desarrolla un flujo completo y reproducible de ciencia de datos utilizando el conjunto **Online Retail**.
+
+El objetivo principal es cubrir tres etapas:
+
+1. adquisición y procesamiento de datos;
+2. análisis exploratorio mediante SQLite y pandas;
+3. visualización e interpretación de resultados.
+
+Adicionalmente, el trabajo incorpora extensiones de:
+
+- RFM;
+- K-Means;
+- PCA;
+- teoría de grafos;
+- procesos estocásticos;
+- Markov;
+- series temporales;
+- SARIMA.
+
+La idea no es utilizar muchos algoritmos por cantidad, sino hacer que cada método responda una pregunta distinta.
+
+---
+
+## Parte 1 — Adquisición y limpieza
+
+El conjunto original contiene:
+
+- **541,909 registros**;
+- **8 variables originales**.
+
+Durante la auditoría se encontraron:
+
+- 5,268 duplicados exactos;
+- cancelaciones;
+- cantidades negativas;
+- precios iguales o inferiores a cero;
+- clientes sin identificador.
+
+La decisión metodológica principal fue **no eliminar automáticamente todo valor atípico**.
+
+Se eliminaron únicamente los duplicados exactos. Las cancelaciones, devoluciones, ajustes y clientes no identificados se conservaron porque pueden representar operaciones comerciales reales.
+
+El conjunto procesado contiene:
+
+- **536,641 registros**;
+- **22 columnas**.
+
+---
+
+## Parte 2 — Base de datos SQLite
+
+Los datos procesados se almacenaron en:
+
+`database/online_retail.db`
+
+La tabla principal es:
+
+`transactions`
+
+SQLite permite separar claramente:
+
+**procesamiento → almacenamiento → consulta → análisis**
+
+---
+
+## Parte 3 — Análisis exploratorio
+
+Los principales resultados del EDA fueron:
+
+- aproximadamente **25,900 facturas**;
+- **4,070 productos**;
+- **4,372 clientes identificados**;
+- **38 países**;
+- **305 días con actividad**.
+
+Reino Unido concentra aproximadamente:
+
+**91.36% de las transacciones.**
+
+Esto significa que los resultados no deben generalizarse automáticamente a todos los mercados internacionales.
+
+---
+
+# Visualizaciones principales del Deber 1
+
+## Figura 1 — Ventas netas diarias
+
+Esta visualización permite observar la evolución temporal de la actividad comercial.
+
+![Ventas netas diarias](figures/01_daily_sales.png)
+
+---
+
+## Figura 2 — Estructura RFM de clientes
+
+Permite observar diferencias entre clientes en recencia, frecuencia y valor monetario.
+
+![Estructura RFM de clientes](figures/02_rfm_customers.png)
+
+---
+
+## Figura 3 — Co-compra de productos
+
+Permite observar relaciones entre productos que aparecen conjuntamente en las facturas.
+
+![Co-compra de productos](figures/03_product_cooccurrence.png)
+
+---
+
+# Extensiones avanzadas
+
+## 1. Segmentación RFM, K-Means y PCA
+
+Se analizaron:
+
+- **4,338 clientes**.
+
+El mejor resultado de clustering fue:
+
+- **K = 2**;
+- **Silhouette Score ≈ 0.4325**.
+
+Uno de los grupos contiene clientes más recientes, frecuentes y de mayor valor monetario.
+
+Los dos primeros componentes de PCA explican aproximadamente:
+
+**93.86% de la variabilidad** de las variables RFM transformadas.
+
+![Segmentación RFM mediante K-Means y PCA](figures/04_rfm_clusters_pca.png)
+
+---
+
+## 2. Grafo de co-compra
+
+En este grafo:
+
+- cada nodo representa un producto;
+- cada arista representa una relación de co-compra.
+
+El grafo final contiene:
+
+- **729 nodos**;
+- **8,061 aristas**;
+- **15 comunidades Louvain**.
+
+Esto permite identificar productos centrales y grupos de productos que aparecen frecuentemente juntos.
+
+![Comunidades de productos](figures/05_product_communities.png)
+
+---
+
+## 3. Proceso de llegadas
+
+Se analizaron:
+
+- **19,960 facturas de venta**;
+- **374 días calendario**.
+
+La media diaria es aproximadamente:
+
+**53.37 facturas**
+
+y el índice de dispersión global es:
+
+**21.90**
+
+Como este valor es muy superior a 1, existe una sobredispersión fuerte.
+
+Además:
+
+**autocorrelación en lag 7 ≈ 0.795**
+
+lo que revela una estructura semanal muy marcada.
+
+![Diagnóstico temporal de llegadas](figures/06_arrival_diagnostics.png)
+
+---
+
+## 4. Modelo de Markov
+
+La actividad se clasificó en tres estados:
+
+- Low;
+- Medium;
+- High.
+
+Las probabilidades más importantes son:
+
+- **P(Low → Low) ≈ 60.4%**;
+- **P(High → High) ≈ 72.0%**.
+
+La persistencia global es aproximadamente:
+
+**60.3%**
+
+Esto muestra que los estados de actividad presentan persistencia temporal.
+
+![Matriz de transición de Markov](figures/07_markov_transition_matrix.png)
+
+---
+
+## 5. Pronóstico SARIMA
+
+El modelo seleccionado fue:
+
+**SARIMA(1,0,1)(1,1,1,7)**
+
+Se comparó con un baseline semanal utilizando las últimas ocho semanas como conjunto de prueba.
+
+### Baseline
+
+- MAE = **22.39**;
+- RMSE = **29.59**;
+- sMAPE = **30.43%**.
+
+### SARIMA
+
+- MAE = **18.40**;
+- RMSE = **25.41**;
+- sMAPE = **25.53%**.
+
+La mejora fue aproximadamente:
+
+- **17.85% en MAE**;
+- **14.11% en RMSE**.
+
+![Pronóstico SARIMA frente al baseline semanal](figures/08_sarima_forecast.png)
+
+La prueba de Ljung-Box indica que todavía queda autocorrelación en los residuos.
+
+Por tanto, SARIMA mejora el pronóstico, pero no captura toda la dinámica temporal.
+
+---
+
+# Conclusiones del Deber 1
+
+1. La limpieza debe considerar el significado comercial de las observaciones y no limitarse a eliminar valores aparentemente anómalos.
+
+2. SQLite permite construir un flujo reproducible que separa procesamiento, almacenamiento y análisis.
+
+3. El conjunto está fuertemente concentrado en Reino Unido, por lo que la generalización geográfica debe realizarse con cautela.
+
+4. RFM y K-Means muestran diferencias importantes entre clientes en recencia, frecuencia y valor monetario.
+
+5. La red de co-compra demuestra que existen relaciones estructuradas entre productos y comunidades comercialmente coherentes.
+
+6. La actividad diaria presenta fuerte sobredispersión y una estacionalidad semanal claramente observable.
+
+7. El modelo de Markov muestra persistencia entre niveles de actividad, especialmente en el estado High.
+
+8. SARIMA aprovecha parte de la estructura temporal y mejora el pronóstico frente a un baseline semanal sencillo.
+
+9. Los residuos del modelo todavía contienen autocorrelación, por lo que existe margen para modelos temporales más ricos.
+
+---
+
+# Estructura sugerida para presentar el Deber 1
+
+## 1. Problema
+
+> "Trabajé con el conjunto Online Retail y construí un flujo reproducible desde los datos originales hasta su limpieza, almacenamiento, análisis y visualización."
+
+## 2. Limpieza
+
+> "No eliminé automáticamente cantidades negativas, cancelaciones o clientes faltantes porque pueden representar operaciones comerciales reales."
+
+## 3. SQLite
+
+> "Después de limpiar los datos almacené 536,641 registros en SQLite para separar el almacenamiento del análisis."
+
+## 4. EDA
+
+Recordar:
+
+- 25,900 facturas;
+- 4,070 productos;
+- 4,372 clientes;
+- 38 países.
+
+## 5. Visualizaciones
+
+Mostrar primero las tres visualizaciones principales y explicar qué pregunta responde cada una.
+
+## 6. Clientes
+
+> "RFM y K-Means permitieron encontrar dos perfiles principales de comportamiento."
+
+## 7. Productos
+
+> "La red de co-compra permitió estudiar qué productos aparecen juntos y detectar comunidades."
+
+## 8. Tiempo
+
+Recordar:
+
+- dispersión global = **21.90**;
+- autocorrelación lag 7 = **0.795**.
+
+## 9. Markov
+
+Recordar:
+
+- Low → Low = **60.4%**;
+- High → High = **72.0%**.
+
+## 10. SARIMA
+
+Recordar:
+
+- mejora MAE = **17.85%**;
+- mejora RMSE = **14.11%**.
+
+## 11. Cierre
+
+> "El objetivo no fue aplicar muchos algoritmos, sino construir una secuencia en la que cada método responde una pregunta diferente sobre los mismos datos."
+
+---
+
+# Historia completa del proyecto
+
+**Limpieza** → ¿qué datos puedo analizar?
+
+**SQLite** → ¿cómo almaceno los datos?
+
+**EDA** → ¿qué está ocurriendo?
+
+**RFM / K-Means** → ¿cómo se comportan los clientes?
+
+**Grafos** → ¿qué productos se compran juntos?
+
+**Procesos estocásticos** → ¿cómo llegan las compras?
+
+**Markov** → ¿persisten los estados de actividad?
+
+**SARIMA** → ¿podemos anticipar la actividad futura?
+
+<!-- HOMEWORK1-SUMMARY:END -->
+
 ## Conjunto de datos
 
 El conjunto original corresponde a transacciones de una empresa minorista en línea entre diciembre de 2010 y diciembre de 2011.
@@ -198,6 +542,8 @@ Archivo:
 
     figures/01_daily_sales.png
 
+![Ventas netas diarias](figures/01_daily_sales.png)
+
 Presenta las ventas netas por día junto con un promedio móvil de siete días.
 
 Permite observar:
@@ -212,6 +558,8 @@ Permite observar:
 Archivo:
 
     figures/02_rfm_customers.png
+
+![Estructura RFM de clientes](figures/02_rfm_customers.png)
 
 Representa conjuntamente:
 
@@ -228,6 +576,8 @@ Esta estructura constituye una base para posteriores técnicas de segmentación.
 Archivo:
 
     figures/03_product_cooccurrence.png
+
+![Co-compra de productos](figures/03_product_cooccurrence.png)
 
 Se construye una matriz de coocurrencia para los productos más frecuentes.
 
@@ -391,6 +741,8 @@ Figura:
 
     figures/04_rfm_clusters_pca.png
 
+![Segmentaci?n RFM mediante K-Means y PCA](figures/04_rfm_clusters_pca.png)
+
 ---
 
 ### 2. Grafo de co-compra de productos
@@ -466,6 +818,8 @@ Archivo:
 Figura:
 
     figures/05_product_communities.png
+
+![Comunidades en la red de co-compra](figures/05_product_communities.png)
 
 ---
 
@@ -608,6 +962,8 @@ Archivos:
 Figura:
 
     figures/06_arrival_diagnostics.png
+
+![Diagn?stico temporal de llegadas](figures/06_arrival_diagnostics.png)
 
 ---
 
@@ -786,6 +1142,8 @@ Archivo:
 Figura:
 
     figures/07_markov_transition_matrix.png
+
+![Matriz de transici?n de Markov](figures/07_markov_transition_matrix.png)
 
 ---
 
@@ -990,6 +1348,8 @@ Archivo:
 Figura:
 
     figures/08_sarima_forecast.png
+
+![Pron?stico SARIMA frente al baseline semanal](figures/08_sarima_forecast.png)
 
 ---
 
