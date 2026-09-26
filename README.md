@@ -1,4 +1,4 @@
-﻿# Taller 1 — Adquisición, procesamiento y visualización de datos
+# Taller 1 — Adquisición, procesamiento y visualización de datos
 
 **Maestría en Ciencia de Datos — Yachay Tech**  
 **Asignatura:** Fundamentos de Ciencia de Datos
@@ -20,9 +20,8 @@ Los scripts fueron diseñados para que cada etapa pueda ejecutarse nuevamente de
 
 <!-- HOMEWORK1-SUMMARY:START -->
 
-# Deber 1 — Adquisición, procesamiento y visualización de datos
 
-## Resumen de la entrega
+## Resumen ejecutivo
 
 Este trabajo desarrolla un flujo completo y reproducible de ciencia de datos utilizando el conjunto **Online Retail**.
 
@@ -44,6 +43,53 @@ Adicionalmente, el trabajo incorpora extensiones de:
 - SARIMA.
 
 La idea no es utilizar muchos algoritmos por cantidad, sino hacer que cada método responda una pregunta distinta.
+
+### Flujo conceptual
+
+```text
+datos originales
+      ↓
+auditoría y limpieza
+      ↓
+SQLite
+      ↓
+EDA y visualización
+      ↓
+RFM + K-Means + PCA
+      ↓
+grafo de co-compra
+      ↓
+proceso de llegadas
+      ↓
+Markov
+      ↓
+SARIMA
+```
+
+Cada etapa responde una pregunta distinta:
+
+- **limpieza:** ¿qué datos pueden analizarse de forma consistente?
+- **EDA:** ¿qué estructura general presenta el conjunto?
+- **RFM:** ¿cómo se diferencian los clientes?
+- **grafos:** ¿qué productos aparecen relacionados mediante co-compra?
+- **proceso de llegadas:** ¿cómo se distribuye temporalmente la actividad?
+- **Markov:** ¿existe persistencia entre niveles de actividad?
+- **SARIMA:** ¿la estructura temporal permite mejorar un pronóstico de referencia?
+
+## Arquitectura de scripts
+
+| Script | Entrada | Función principal | Salida | Concepto clave |
+|---|---|---|---|---|
+| `src/01_load_clean.py` | Excel original | audita, limpia, clasifica y enriquece registros | CSV procesado | limpieza conservadora y validación |
+| `src/02_create_database.py` | CSV procesado | almacena los datos y crea índices | base SQLite | persistencia y consultas eficientes |
+| `src/03_eda.py` | SQLite | reconstruye el DataFrame, valida y resume los datos | reporte EDA | análisis exploratorio |
+| `src/04_visualizations.py` | SQLite | agrega información y genera figuras | visualizaciones | interpretación gráfica |
+| `src/05_rfm_clustering.py` | ventas con CustomerID | construye RFM, aplica log1p, estandariza, K-Means y PCA | clusters de clientes | segmentación no supervisada |
+| `src/06_product_graph.py` | facturas de venta | construye matriz factura-producto y co-ocurrencias | grafo de productos | teoría de grafos |
+| `src/stochastic/arrival_process.py` | facturas de venta | construye la serie diaria de llegadas | serie temporal | proceso de conteo |
+| `src/stochastic/distributions.py` | serie de llegadas | estudia dispersión y estructura probabilística | diagnósticos | Poisson y sobredispersión |
+| `src/stochastic/markov_analysis.py` | estados Low, Medium y High | estima probabilidades de transición | matriz de transición | persistencia de estados |
+| `src/stochastic/time_series.py` | serie temporal diaria | compara baseline semanal y SARIMA | pronóstico fuera de muestra | estacionalidad y predicción |
 
 ---
 
@@ -107,9 +153,9 @@ Esto significa que los resultados no deben generalizarse automáticamente a todo
 
 ---
 
-# Visualizaciones principales del Deber 1
+## Visualizaciones principales del Taller 1
 
-## Figura 1 — Ventas netas diarias
+### Figura 1 — Ventas netas diarias
 
 Esta visualización permite observar la evolución temporal de la actividad comercial.
 
@@ -117,7 +163,7 @@ Esta visualización permite observar la evolución temporal de la actividad come
 
 ---
 
-## Figura 2 — Estructura RFM de clientes
+### Figura 2 — Estructura RFM de clientes
 
 Permite observar diferencias entre clientes en recencia, frecuencia y valor monetario.
 
@@ -125,7 +171,7 @@ Permite observar diferencias entre clientes en recencia, frecuencia y valor mone
 
 ---
 
-## Figura 3 — Co-compra de productos
+### Figura 3 — Co-compra de productos
 
 Permite observar relaciones entre productos que aparecen conjuntamente en las facturas.
 
@@ -133,9 +179,9 @@ Permite observar relaciones entre productos que aparecen conjuntamente en las fa
 
 ---
 
-# Extensiones avanzadas
+## Extensiones avanzadas
 
-## 1. Segmentación RFM, K-Means y PCA
+### 1. Segmentación RFM, K-Means y PCA
 
 Se analizaron:
 
@@ -156,7 +202,7 @@ Los dos primeros componentes de PCA explican aproximadamente:
 
 ---
 
-## 2. Grafo de co-compra
+### 2. Grafo de co-compra
 
 En este grafo:
 
@@ -175,7 +221,7 @@ Esto permite identificar productos centrales y grupos de productos que aparecen 
 
 ---
 
-## 3. Proceso de llegadas
+### 3. Proceso de llegadas
 
 Se analizaron:
 
@@ -202,7 +248,7 @@ lo que revela una estructura semanal muy marcada.
 
 ---
 
-## 4. Modelo de Markov
+### 4. Modelo de Markov
 
 La actividad se clasificó en tres estados:
 
@@ -225,7 +271,7 @@ Esto muestra que los estados de actividad presentan persistencia temporal.
 
 ---
 
-## 5. Pronóstico SARIMA
+### 5. Pronóstico SARIMA
 
 El modelo seleccionado fue:
 
@@ -233,13 +279,13 @@ El modelo seleccionado fue:
 
 Se comparó con un baseline semanal utilizando las últimas ocho semanas como conjunto de prueba.
 
-### Baseline
+#### Baseline
 
 - MAE = **22.39**;
 - RMSE = **29.59**;
 - sMAPE = **30.43%**.
 
-### SARIMA
+#### SARIMA
 
 - MAE = **18.40**;
 - RMSE = **25.41**;
@@ -258,7 +304,7 @@ Por tanto, SARIMA mejora el pronóstico, pero no captura toda la dinámica tempo
 
 ---
 
-# Conclusiones del Deber 1
+## Conclusiones del Taller 1
 
 1. La limpieza debe considerar el significado comercial de las observaciones y no limitarse a eliminar valores aparentemente anómalos.
 
@@ -280,69 +326,7 @@ Por tanto, SARIMA mejora el pronóstico, pero no captura toda la dinámica tempo
 
 ---
 
-# Estructura sugerida para presentar el Deber 1
-
-## 1. Problema
-
-> "Trabajé con el conjunto Online Retail y construí un flujo reproducible desde los datos originales hasta su limpieza, almacenamiento, análisis y visualización."
-
-## 2. Limpieza
-
-> "No eliminé automáticamente cantidades negativas, cancelaciones o clientes faltantes porque pueden representar operaciones comerciales reales."
-
-## 3. SQLite
-
-> "Después de limpiar los datos almacené 536,641 registros en SQLite para separar el almacenamiento del análisis."
-
-## 4. EDA
-
-Recordar:
-
-- 25,900 facturas;
-- 4,070 productos;
-- 4,372 clientes;
-- 38 países.
-
-## 5. Visualizaciones
-
-Mostrar primero las tres visualizaciones principales y explicar qué pregunta responde cada una.
-
-## 6. Clientes
-
-> "RFM y K-Means permitieron encontrar dos perfiles principales de comportamiento."
-
-## 7. Productos
-
-> "La red de co-compra permitió estudiar qué productos aparecen juntos y detectar comunidades."
-
-## 8. Tiempo
-
-Recordar:
-
-- dispersión global = **21.90**;
-- autocorrelación lag 7 = **0.795**.
-
-## 9. Markov
-
-Recordar:
-
-- Low → Low = **60.4%**;
-- High → High = **72.0%**.
-
-## 10. SARIMA
-
-Recordar:
-
-- mejora MAE = **17.85%**;
-- mejora RMSE = **14.11%**.
-
-## 11. Cierre
-
-> "El objetivo no fue aplicar muchos algoritmos, sino construir una secuencia en la que cada método responde una pregunta diferente sobre los mismos datos."
-
----
-
-# Historia completa del proyecto
+## Documentación técnica detallada
 
 **Limpieza** → ¿qué datos puedo analizar?
 
@@ -362,7 +346,7 @@ Recordar:
 
 <!-- HOMEWORK1-SUMMARY:END -->
 
-## Conjunto de datos
+### Conjunto de datos
 
 El conjunto original corresponde a transacciones de una empresa minorista en línea entre diciembre de 2010 y diciembre de 2011.
 
@@ -385,7 +369,7 @@ El archivo original contiene:
 
 ---
 
-## Estructura del proyecto
+### Estructura del proyecto
 
     Taller 1/
     ├── data/
@@ -413,7 +397,7 @@ Los datos procesados y la base SQLite pueden regenerarse mediante los scripts de
 
 ---
 
-## Preparación del entorno
+### Preparación del entorno
 
 Se utilizó Python 3.13 dentro de un entorno virtual.
 
@@ -431,7 +415,7 @@ Instalar las dependencias:
 
 ---
 
-## 1. Limpieza y preparación
+### 1. Limpieza y preparación
 
 Ejecutar:
 
@@ -468,7 +452,7 @@ El archivo procesado se genera en:
 
 ---
 
-## 2. Base de datos SQLite
+### 2. Base de datos SQLite
 
 Ejecutar:
 
@@ -494,7 +478,7 @@ La validación final comprueba que la base contenga los mismos 536,641 registros
 
 ---
 
-## 3. Análisis exploratorio de datos
+### 3. Análisis exploratorio de datos
 
 Ejecutar:
 
@@ -528,7 +512,7 @@ El reporte completo se genera en:
 
 ---
 
-## 4. Visualización de datos
+### 4. Visualización de datos
 
 Ejecutar:
 
@@ -536,7 +520,7 @@ Ejecutar:
 
 El script genera tres visualizaciones principales.
 
-### Figura 1 — Ventas netas diarias
+#### Figura 1 — Ventas netas diarias
 
 Archivo:
 
@@ -553,7 +537,7 @@ Permite observar:
 - patrones semanales;
 - días sin actividad.
 
-### Figura 2 — Estructura RFM de clientes
+#### Figura 2 — Estructura RFM de clientes
 
 Archivo:
 
@@ -571,7 +555,7 @@ Las transformaciones logarítmicas permiten visualizar mejor la fuerte asimetrí
 
 Esta estructura constituye una base para posteriores técnicas de segmentación.
 
-### Figura 3 — Co-compra de productos
+#### Figura 3 — Co-compra de productos
 
 Archivo:
 
@@ -594,7 +578,7 @@ El análisis textual de las figuras se genera en:
 
 ---
 
-## Ejecución completa
+### Ejecución completa
 
 Con el archivo original disponible, el flujo completo puede reproducirse ejecutando:
 
@@ -607,7 +591,7 @@ Cada etapa incorpora validaciones antes de finalizar.
 
 ---
 
-## Decisiones metodológicas
+### Decisiones metodológicas
 
 La limpieza se diseñó para evitar eliminar información potencialmente válida.
 
@@ -623,7 +607,7 @@ En lugar de eliminarlos, estos casos se identifican y clasifican para poder deci
 
 ---
 
-## Reproducibilidad
+### Reproducibilidad
 
 El proyecto utiliza Git para mantener cada etapa separada y trazable.
 
@@ -647,7 +631,7 @@ Los archivos derivados pueden regenerarse a partir de los scripts incluidos.
 
 ---
 
-## Extensiones avanzadas — implementadas y validadas
+### Extensiones avanzadas — implementadas y validadas
 
 Las extensiones avanzadas ya forman parte del proyecto. Su propósito es ampliar el análisis base y responder preguntas distintas sobre clientes, productos y comportamiento temporal.
 
@@ -669,7 +653,7 @@ La idea central no es aplicar algoritmos por cantidad, sino utilizar cada métod
 
 ---
 
-### 1. Segmentación de clientes: RFM, K-Means y PCA
+#### 1. Segmentación de clientes: RFM, K-Means y PCA
 
 La primera pregunta avanzada es:
 
@@ -745,7 +729,7 @@ Figura:
 
 ---
 
-### 2. Grafo de co-compra de productos
+#### 2. Grafo de co-compra de productos
 
 La siguiente pregunta es:
 
@@ -823,7 +807,7 @@ Figura:
 
 ---
 
-### 3. Proceso estocástico de llegadas
+#### 3. Proceso estocástico de llegadas
 
 Después de estudiar clientes y productos, la siguiente pregunta es:
 
@@ -852,7 +836,7 @@ Por tanto, el índice de dispersión fue:
 
 ---
 
-### 4. ¿Por qué estudiar un proceso de Poisson?
+#### 4. ¿Por qué estudiar un proceso de Poisson?
 
 Un proceso de Poisson homogéneo es un modelo básico para eventos que llegan aleatoriamente con una intensidad aproximadamente constante.
 
@@ -880,7 +864,7 @@ Sin embargo, no sería correcto concluir inmediatamente que el modelo falla, por
 
 ---
 
-### 5. Patrón semanal
+#### 5. Patrón semanal
 
 El promedio de facturas depende notablemente del día de la semana.
 
@@ -904,7 +888,7 @@ Por ello no debe mezclarse directamente con los demás días al evaluar un Poiss
 
 ---
 
-### 6. Poisson ajustado por día de la semana
+#### 6. Poisson ajustado por día de la semana
 
 Para realizar una prueba más rigurosa se estimó una intensidad diferente para cada día operativo de la semana.
 
@@ -967,7 +951,7 @@ Figura:
 
 ---
 
-### 7. Autocorrelación
+#### 7. Autocorrelación
 
 La autocorrelación estudia si los valores actuales están relacionados con valores pasados de la misma serie.
 
@@ -997,7 +981,7 @@ Esta evidencia justifica posteriormente el uso de un modelo temporal con períod
 
 ---
 
-### 8. Tiempos entre llegadas
+#### 8. Tiempos entre llegadas
 
 También se estudiaron los intervalos temporales entre facturas consecutivas.
 
@@ -1027,7 +1011,7 @@ El valor superior a 1 es compatible con una llegada más irregular o agrupada qu
 
 ---
 
-### 9. Estados de actividad y modelo de Markov
+#### 9. Estados de actividad y modelo de Markov
 
 La siguiente pregunta es:
 
@@ -1064,7 +1048,7 @@ Se obtuvieron:
 
 ---
 
-### 10. ¿Qué representa una cadena de Markov?
+#### 10. ¿Qué representa una cadena de Markov?
 
 Una cadena de Markov de primer orden estudia probabilidades de transición de la forma:
 
@@ -1078,7 +1062,7 @@ Se utiliza como una representación descriptiva sencilla de la persistencia temp
 
 ---
 
-### 11. Matriz de transición
+#### 11. Matriz de transición
 
 La matriz estimada fue aproximadamente:
 
@@ -1113,7 +1097,7 @@ Por tanto, alrededor del 60.3% de las transiciones permanecen en el mismo estado
 
 ---
 
-### 12. Prueba de independencia de los estados
+#### 12. Prueba de independencia de los estados
 
 Se aplicó una prueba chi-cuadrado para evaluar si el estado actual y el siguiente pueden considerarse independientes.
 
@@ -1147,7 +1131,7 @@ Figura:
 
 ---
 
-### 13. Series temporales y SARIMA
+#### 13. Series temporales y SARIMA
 
 La fuerte autocorrelación observada en lag 7 sugiere una estructura semanal.
 
@@ -1177,7 +1161,7 @@ porque el patrón principal es semanal.
 
 ---
 
-### 14. Transformación logarítmica
+#### 14. Transformación logarítmica
 
 El SARIMA se ajustó sobre:
 
@@ -1189,7 +1173,7 @@ Después del pronóstico se aplica la transformación inversa para regresar a la
 
 ---
 
-### 15. División entrenamiento-prueba
+#### 15. División entrenamiento-prueba
 
 En series temporales no se debe dividir aleatoriamente.
 
@@ -1225,7 +1209,7 @@ fuera de muestra.
 
 ---
 
-### 16. ¿Por qué utilizar un baseline?
+#### 16. ¿Por qué utilizar un baseline?
 
 Un modelo complejo debe compararse contra una estrategia sencilla.
 
@@ -1244,7 +1228,7 @@ Por ejemplo, el comportamiento de un lunes se compara con el lunes anterior.
 
 ---
 
-### 17. Selección del SARIMA
+#### 17. Selección del SARIMA
 
 Se evaluó un conjunto compacto de modelos candidatos.
 
@@ -1264,7 +1248,7 @@ Esto evita fuga de información.
 
 ---
 
-### 18. Regla estructural del sábado
+#### 18. Regla estructural del sábado
 
 Durante todo el histórico observado:
 
@@ -1280,7 +1264,7 @@ Representa una característica estructural observada en el proceso.
 
 ---
 
-### 19. Métricas de pronóstico
+#### 19. Métricas de pronóstico
 
 Se utilizaron tres métricas.
 
@@ -1310,7 +1294,7 @@ Debe interpretarse con cuidado cuando existen valores cercanos a cero.
 
 ---
 
-### 20. Resultados del baseline semanal
+#### 20. Resultados del baseline semanal
 
 El baseline obtuvo:
 
@@ -1320,7 +1304,7 @@ El baseline obtuvo:
 
 ---
 
-### 21. Resultados de SARIMA
+#### 21. Resultados de SARIMA
 
 El modelo SARIMA obtuvo:
 
@@ -1353,7 +1337,7 @@ Figura:
 
 ---
 
-### 22. Diagnóstico de residuos: Ljung-Box
+#### 22. Diagnóstico de residuos: Ljung-Box
 
 Un buen modelo temporal debería dejar residuos con poca estructura temporal restante.
 
@@ -1383,11 +1367,11 @@ No debe decirse:
 
 ---
 
-## Conclusión general del análisis avanzado
+### Conclusión general del análisis avanzado
 
 El proyecto muestra que los datos comerciales poseen estructura en varias dimensiones.
 
-### Clientes
+#### Clientes
 
 Los clientes no presentan un comportamiento homogéneo.
 
@@ -1397,7 +1381,7 @@ RFM y K-Means permiten separar perfiles con diferencias claras en:
 - frecuencia;
 - valor monetario.
 
-### Productos
+#### Productos
 
 Los productos tampoco se comportan de manera independiente.
 
@@ -1407,7 +1391,7 @@ La red de co-compra muestra:
 - relaciones fuertes;
 - comunidades de artículos relacionados.
 
-### Tiempo
+#### Tiempo
 
 La actividad comercial posee:
 
@@ -1416,7 +1400,7 @@ La actividad comercial posee:
 - autocorrelación;
 - persistencia de estados.
 
-### Pronóstico
+#### Pronóstico
 
 La estructura temporal contiene información predictiva.
 
@@ -1434,15 +1418,15 @@ La idea fundamental es que cada técnica responde una pregunta diferente.
 
 ---
 
-## Limitaciones del análisis
+### Limitaciones del análisis
 
-### Concentración geográfica
+#### Concentración geográfica
 
 Aproximadamente 91.36% de las transacciones están asociadas con Reino Unido.
 
 Por ello los resultados no deben generalizarse automáticamente a todos los mercados internacionales.
 
-### Horizonte temporal
+#### Horizonte temporal
 
 El conjunto contiene aproximadamente un año de información.
 
@@ -1452,7 +1436,7 @@ Esto permite estudiar patrones semanales, pero limita el análisis de:
 - múltiples ciclos anuales;
 - comparación entre varios años.
 
-### CustomerID faltante
+#### CustomerID faltante
 
 Existe una cantidad importante de transacciones sin identificador de cliente.
 
@@ -1460,13 +1444,13 @@ Por esta razón el análisis RFM utiliza únicamente clientes identificados.
 
 Los resultados de segmentación no representan necesariamente todas las transacciones.
 
-### K-Means
+#### K-Means
 
 K-Means genera una partición útil bajo las variables y transformaciones utilizadas.
 
 No demuestra que existan exactamente dos tipos naturales de clientes.
 
-### Grafos
+#### Grafos
 
 Una relación de co-compra representa asociación.
 
@@ -1474,7 +1458,7 @@ No demuestra causalidad.
 
 Que dos productos aparezcan juntos frecuentemente no significa que uno provoque la compra del otro.
 
-### Poisson
+#### Poisson
 
 Los resultados muestran que un Poisson homogéneo simple no describe adecuadamente los datos observados.
 
@@ -1482,13 +1466,13 @@ Esto no significa que todos los modelos basados en Poisson sean inadecuados.
 
 Modelos con intensidad variable podrían ser objeto de análisis futuro.
 
-### Markov
+#### Markov
 
 La matriz de transición muestra persistencia entre estados.
 
 No demuestra que el proceso real satisfaga exactamente la propiedad de Markov.
 
-### SARIMA
+#### SARIMA
 
 SARIMA mejora el baseline fuera de muestra, pero los residuos conservan autocorrelación significativa.
 
@@ -1496,282 +1480,85 @@ Por tanto, todavía existe información temporal que el modelo no captura.
 
 ---
 
-## Qué no afirmar durante la exposición
+## Decisiones metodológicas y preguntas frecuentes
 
-Para mantener rigor científico, es importante evitar conclusiones demasiado fuertes.
-
-No decir:
-
-> "Encontramos los dos tipos reales de clientes."
-
-Mejor decir:
-
-> "K-Means produjo una segmentación útil en dos grupos bajo la representación RFM utilizada."
-
-No decir:
-
-> "Estos productos provocan la compra de otros."
-
-Mejor decir:
-
-> "Estos productos presentan relaciones fuertes de co-compra."
-
-No decir:
-
-> "Demostramos que los datos no son Poisson."
-
-Mejor decir:
-
-> "Un proceso de Poisson homogéneo resulta demasiado simple para representar los patrones observados."
-
-No decir:
-
-> "Demostramos que el proceso es Markov."
-
-Mejor decir:
-
-> "Una cadena de Markov de primer orden proporciona una representación descriptiva de la persistencia entre estados."
-
-No decir:
-
-> "SARIMA predice perfectamente."
-
-Mejor decir:
-
-> "SARIMA mejora el baseline fuera de muestra, aunque permanece autocorrelación en los residuos."
-
----
-
-# Guía para explicar el proyecto en clase
-
-Una forma sencilla de presentar el trabajo es dividirlo en una historia.
-
-## Paso 1 — Problema
-
-Puede comenzar diciendo:
-
-> Este taller parte del conjunto Online Retail. Mi objetivo inicial fue construir un flujo reproducible desde los datos originales hasta una base SQLite, realizar análisis exploratorio y generar visualizaciones. Después amplié el trabajo para estudiar clientes, productos y comportamiento temporal.
-
----
-
-## Paso 2 — Limpieza
-
-Idea que debe recordar:
-
-> No todo dato extraño es necesariamente un error.
-
-Puede explicar:
-
-> Encontré duplicados, cancelaciones, cantidades negativas, precios cero y clientes no identificados. Eliminé únicamente duplicados exactos y conservé las demás observaciones clasificándolas según su naturaleza, porque pueden representar información comercial real.
-
----
-
-## Paso 3 — SQLite
-
-Puede decir:
-
-> Después de la limpieza almacené las 536,641 observaciones en SQLite. Esto separa el procesamiento de los datos de su almacenamiento y permite recuperar posteriormente la información mediante consultas.
-
----
-
-## Paso 4 — EDA
-
-Puede explicar:
-
-> El análisis exploratorio permitió entender la escala y composición del conjunto. Encontré aproximadamente 25,900 facturas, 4,070 productos, 4,372 clientes identificados y 38 países. Además, Reino Unido concentra alrededor del 91% de las transacciones.
-
----
-
-## Paso 5 — Clientes
-
-Puede decir:
-
-> Para estudiar clientes construí variables RFM: recencia, frecuencia y valor monetario. Después de transformar y estandarizar las variables utilicé K-Means. El mejor Silhouette Score se obtuvo con dos clusters.
-
-Después explique la diferencia:
-
-> Un grupo presenta clientes más recientes, frecuentes y de mayor valor monetario; el otro presenta menor actividad.
-
----
-
-## Paso 6 — PCA
-
-Puede decir:
-
-> Utilicé PCA principalmente para visualizar la segmentación. Los dos primeros componentes explican aproximadamente 93.86% de la variabilidad de las variables RFM transformadas.
-
----
-
-## Paso 7 — Productos y grafos
-
-Puede explicar:
-
-> Después cambié la pregunta desde quién compra hacia qué productos se compran juntos. Construí una matriz factura-producto y, mediante co-ocurrencias, generé una red donde cada nodo es un producto y cada arista representa compras conjuntas.
-
-Luego:
-
-> Encontré productos muy centrales y 15 comunidades mediante Louvain.
-
----
-
-## Paso 8 — Tiempo y Poisson
-
-Puede decir:
-
-> Después estudié cuándo ocurren las compras. La serie diaria presenta una media cercana a 53 facturas y una varianza superior a 1,168, por lo que existe una sobredispersión muy fuerte.
-
-Después añada:
-
-> Además, el sábado tiene actividad cero durante todo el período y existe una fuerte estructura semanal.
-
----
-
-## Paso 9 — Autocorrelación
-
-El número más importante que debe recordar es:
-
-    autocorrelación lag 7 ≈ 0.795
-
-Puede decir:
-
-> Esto significa que la actividad de un día presenta una relación muy fuerte con la actividad observada una semana antes.
-
----
-
-## Paso 10 — Markov
-
-Puede decir:
-
-> Normalicé la actividad respecto al día de la semana y construí tres estados: Low, Medium y High.
-
-Después recuerde dos números:
-
-    P(Low -> Low) ≈ 60.4%
-    P(High -> High) ≈ 72.0%
-
-Interpretación:
-
-> Los estados presentan persistencia. Especialmente, cuando el proceso entra en actividad alta, existe una probabilidad cercana al 72% de continuar en actividad alta en el siguiente día operativo.
-
----
-
-## Paso 11 — SARIMA
-
-Puede decir:
-
-> Como observé una fuerte periodicidad semanal, utilicé un SARIMA con período estacional 7.
-
-Modelo seleccionado:
-
-    SARIMA(1,0,1)(1,1,1,7)
-
-Luego explique que se utilizaron las últimas ocho semanas como prueba fuera de muestra.
-
----
-
-## Paso 12 — Resultado predictivo
-
-Estos son los números principales para recordar:
-
-    Baseline MAE = 22.39
-    SARIMA MAE   = 18.40
-
-    Mejora MAE ≈ 17.85%
-
-    Baseline RMSE = 29.59
-    SARIMA RMSE   = 25.41
-
-    Mejora RMSE ≈ 14.11%
-
-Puede concluir:
-
-> SARIMA supera al baseline semanal, por lo que existe estructura temporal aprovechable para pronóstico.
-
-Finalmente añada la limitación:
-
-> Sin embargo, Ljung-Box todavía detecta autocorrelación residual, por lo que el modelo no captura toda la dinámica.
-
----
-
-# Preguntas que podrían hacer en clase
-
-## ¿Por qué no eliminó las cantidades negativas?
+### ¿Por qué no eliminó las cantidades negativas?
 
 Porque pueden corresponder a devoluciones o cancelaciones reales y contienen información comercial.
 
-## ¿Por qué utilizó SQLite?
+### ¿Por qué utilizó SQLite?
 
 Porque permite separar almacenamiento y análisis y construir un flujo reproducible mediante SQL y Python.
 
-## ¿Qué significa RFM?
+### ¿Qué significa RFM?
 
 Recency, Frequency y Monetary: cuánto tiempo pasó desde la última compra, cuántas compras realizó el cliente y cuánto valor monetario generó.
 
-## ¿Por qué transformó las variables RFM?
+### ¿Por qué transformó las variables RFM?
 
 Porque presentan distribuciones muy asimétricas. `log1p` reduce la influencia de valores extremos.
 
-## ¿Por qué estandarizó?
+### ¿Por qué estandarizó?
 
 Porque K-Means utiliza distancias y las variables deben estar en escalas comparables.
 
-## ¿Por qué K igual a 2?
+### ¿Por qué se seleccionó K = 2?
 
 Porque entre los valores evaluados de 2 a 10, K igual a 2 obtuvo el mayor Silhouette Score.
 
-## ¿Para qué utilizó PCA?
+### ¿Para qué utilizó PCA?
 
 Principalmente para visualizar en dos dimensiones la estructura de tres variables RFM transformadas.
 
-## ¿Qué representa una arista del grafo?
+### ¿Qué representa una arista del grafo?
 
 Que dos productos aparecieron conjuntamente en facturas.
 
-## ¿Qué significa PageRank en este contexto?
+### ¿Qué significa PageRank en este contexto?
 
 Mide centralidad dentro de la red considerando no solo cuántas conexiones posee un producto, sino también la importancia de los productos con los que se conecta.
 
-## ¿Qué significa sobredispersión?
+### ¿Qué significa sobredispersión?
 
 Que la varianza del conteo es considerablemente mayor que su media.
 
-## ¿Por qué no basta un Poisson homogéneo?
+### ¿Por qué un Poisson homogéneo resulta insuficiente?
 
 Porque los datos muestran sobredispersión, intensidad diferente según el día de la semana y autocorrelación temporal.
 
-## ¿Qué significa autocorrelación de 0.795 en lag 7?
+### ¿Cómo se interpreta la autocorrelación ≈ 0.795 en lag 7?
 
 Que existe una relación fuerte entre la actividad actual y la observada siete días antes.
 
-## ¿Qué significa la matriz de Markov?
+### ¿Qué significa la matriz de Markov?
 
 Resume las probabilidades observadas de pasar de un estado de actividad a otro.
 
-## ¿Por qué SARIMA y no ARIMA simple?
+### ¿Por qué SARIMA y no ARIMA simple?
 
 Porque SARIMA incorpora explícitamente la estacionalidad semanal observada.
 
-## ¿Por qué no dividió aleatoriamente entrenamiento y prueba?
+### ¿Por qué se utilizó una partición cronológica?
 
 Porque en series temporales debe preservarse el orden cronológico para evitar utilizar información futura durante el entrenamiento.
 
-## ¿Qué es un baseline?
+### ¿Qué es un baseline?
 
 Una estrategia sencilla contra la cual se compara un modelo más complejo.
 
-## ¿SARIMA fue mejor?
+### ¿Qué desempeño obtuvo SARIMA frente al baseline?
 
 Sí, en este experimento fuera de muestra redujo MAE aproximadamente 17.85% y RMSE aproximadamente 14.11% frente al baseline semanal.
 
-## ¿Entonces SARIMA es perfecto?
+### ¿Qué limitaciones presenta el modelo SARIMA?
 
 No. La prueba Ljung-Box muestra que todavía permanece dependencia temporal en los residuos.
 
 ---
 
-# Resultados clave para memorizar
+## Resumen de resultados cuantitativos
 
-Si dispone de poco tiempo antes de la exposición, recuerde estos valores:
+Los principales resultados numéricos del análisis son:
 
     Filas originales:        541,909
     Filas limpias:           536,641
@@ -1807,7 +1594,7 @@ Si dispone de poco tiempo antes de la exposición, recuerde estos valores:
 
 ---
 
-# Idea final para recordar
+## Síntesis conceptual
 
 Si únicamente se recuerda una idea de todo el proyecto, debe ser:
 
